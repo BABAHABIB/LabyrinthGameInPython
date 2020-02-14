@@ -2,6 +2,7 @@
 
 """Ce module contient la classe Carte."""
 
+
 import os
 
 from Fonctions.Librairies import *
