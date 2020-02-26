@@ -7,7 +7,7 @@ from shutil import copy2
 #os.chdir('../')
 partiesbkp = os.getcwd() + "\cartesbkp"
 partiessaved = os.getcwd() + "\partiessaved"
-
+chemin_obstacle= os.getcwd() + "\Obstacles\\"
 #Variables
 extension = ".txt"
 chemin = partiessaved
@@ -23,7 +23,7 @@ obstacles = [' ','O']
 
 def getparties(started):
 	if started == True:
-		print("Labyrinthes entamés - parties commencées :")
+		print("Labyrinthes entamés - parties commencés :")
 		chemin = partiessaved
 	else:
 		print("Labyrinthes disponibles :")
@@ -43,7 +43,6 @@ def PartieExiste(nom,started):
 	if os.path.isfile(chemin+"\\"+nom+extension):
 		return True
 	else:
-		print("Partie introuvable, veuillez recommencer !")
 		return False
 
 def creer_labyrinthe_depuis_chaine(nom,started):
@@ -55,11 +54,29 @@ def creer_labyrinthe_depuis_chaine(nom,started):
 		for line in f:
 			j = 0
 			for ch in line:
-					grille[i,j]= ch
-					j += 1
+				grille[i,j]= ch
+				j += 1
 			i += 1
 	f.close()
 	return grille
+
+def get_Next_position(position,action):
+	i,j = position[0],position[1]
+	#Sud
+	if action.upper() == D_P[1]:
+		i += 1
+	#Nord
+	if action.upper() == D_P[3]:
+		i -= 1
+	#Est
+	if action.upper() == D_P[5]:
+		j += 1
+	#Ouest
+	if action.upper() == D_P[7]:
+		j -= 1
+
+	new_position = i,j
+	return new_position
 
 def update_labyrinthe_depuis_grille(nom,grille):
 	ch =""
@@ -69,11 +86,9 @@ def update_labyrinthe_depuis_grille(nom,grille):
 	f.write(ch)
 	f.close()
 
-def del_partie(nom):
-	os.remove(fic_name+nom+extension)
-	copy2(partiesbkp+"\\"+nom+extension,chemin)
-
 def create_partie(nom):
+	if os.path.exists(chemin_obstacle+nom+extension):
+		os.remove(chemin_obstacle+nom+extension)
 	copy2(partiesbkp+"\\"+nom+extension,chemin)
 
 def afficher_partie(nom):
@@ -87,12 +102,18 @@ def get_robot_position(grille,robot):
 			if value == robot:
 				return position
 
-#def deplacerRobot(grille,action)
-#
-#	if next_pos in {'','','',''}
-#def multipli (x,y):
-#	return x * y
+def setPreviousObstacle(nom,previous_obstacle):
+	f= open(chemin_obstacle+nom+extension, 'w+')
+	f.write(previous_obstacle)
+	f.close()
 
-#cont = afficher_partie("prison")
-#print(cont)
-#os.system("PAUSE")
+def getPreviousObstacle(nom):
+	if not os.path.exists(chemin_obstacle+nom+extension):
+		with open(chemin_obstacle+nom+extension, 'w') as f: pass
+
+	f = open(chemin_obstacle+nom+extension, 'r')
+	previous_obstacle = f.read()
+	f.close()
+	if previous_obstacle == "":
+		previous_obstacle = " "
+	return previous_obstacle
