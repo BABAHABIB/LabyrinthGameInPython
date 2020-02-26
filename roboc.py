@@ -2,29 +2,69 @@
 
 """Ce fichier contient le code principal du jeu.
 
-Exécutez-le avec Python pour lancer le jeu.
+Ex�cutez-le avec Python pour lancer le jeu.
 
 """
-
+#Librairies
 import os
-
+import re
 from carte import Carte
+from Fonctions.Librairies import *
+###Variables
+continuer_partie = True
+ok = False
+###Variables
 
-# On charge les cartes existantes
-cartes = []
-for nom_fichier in os.listdir("cartes"):
-    if nom_fichier.endswith(".txt"):
-        chemin = os.path.join("cartes", nom_fichier)
-        nom_carte = nom_fichier[:-3].lower()
-        with open(chemin, "r") as fichier:
-            contenu = fichier.read()
-            # Création d'une carte, à compléter
+############# Banderole d'acceuil du Jeu #############
+print("*********************************************")
+print("Bonjour et bienvenue sur le jeu du labyrinthe")
+print("*********************************************")
+print("\n")
+############# Banderole d'acceuil du Jeu #############
+getparties(True)
+print("\n")
+getparties(False)
+print("\n")
+while continuer_partie:
 
-# On affiche les cartes existantes
-print("Labyrinthes existants :")
-for i, carte in enumerate(cartes):
-    print("  {} - {}".format(i + 1, carte.nom))
+	print("Souhaitez vous jouer une nouvelle partie ou continuer sur une partie existante ?")
+	user_entry = input("N = Nouvelle, C = Continuer une partie, Q = Quitter le jeu \n")
 
-# Si il y a une partie sauvegardée, on l'affiche, à compléter
+	if re.match(reg,user_entry):
+		if user_entry.upper() == "Q":
+			continuer_partie = False
+			break
+		if user_entry.upper() == "N":
+			started = False
+		if user_entry.upper() == "C":
+			started = True
+	else:
+		print("Le choix saisi est incorrect, veuillez recommencer")
+		continue
 
-# ... Complétez le programme ...
+	nom= input("Veuillez entrer le nom de la partie �jouer: ")
+
+	if PartieExiste(nom,started):
+		partie = Carte(nom,started)
+		ok = False
+		possible = ""
+		while ok == False:
+			partie.getLab()
+			action = input("Entrez un deplacement N=Nord, S=Sud, E=Est, O=Ouest:")
+			if re.match(D_P,action):
+				new_position=get_Next_position(partie.lab.getPosition(),action)
+				possible= partie.lab.Check_Obstacle(new_position)
+				if possible == 0:
+					print("Deplacement impossible il s'agit d'un obstacle")
+				if possible == 2:
+					print("!! Bravo !! ")
+					ok = True
+			else:
+				print("Le choix saisi est incorrect, veuillez recommencer")
+				continue
+	else:
+		print("Partie introuvable, veuillez recommencer !")
+		continue
+
+print("Au revoir et �bientot")
+os.system("PAUSE")

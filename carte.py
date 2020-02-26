@@ -2,13 +2,23 @@
 
 """Ce module contient la classe Carte."""
 
+from Fonctions.Librairies import *
+from labyrinthe import *
+
 class Carte:
 
-    """Objet de transition entre un fichier et un labyrinthe."""
+	#Indicateur du nombre de cartes disponibles
+	nbr_cartes = 0
 
-    def __init__(self, nom, chaine):
-        self.nom = nom
-        self.labyrinthe = creer_labyrinthe_depuis_chaine(chaine)
+	def __init__(self,nom,started):
+		self.nom = nom
+		#Indicateur cartes commencée ou pas
+		self.started = started
+		Carte.nbr_cartes += 1
+		self.lab = Labyrinthe(nom,started)
 
-    def __repr__(self):
-        return "<Carte {}>".format(self.nom)
+	def getNom(self):
+		return self.nom
+
+	def getLab(self):
+		print(self.lab)
