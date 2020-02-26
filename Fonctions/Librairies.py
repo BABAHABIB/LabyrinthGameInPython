@@ -13,7 +13,7 @@ extension = ".txt"
 chemin = partiessaved
 fic_name = chemin + "\\"
 chariot = "\n"
-####expressions regulières
+####expressions reguliÃ¨res
 reg = "[CcNnqQ]{1}"
 #Deplacements Possibles
 D_P = "[SsNnEeOoQq]{1}"
@@ -23,7 +23,7 @@ obstacles = [' ','O']
 
 def getparties(started):
 	if started == True:
-		print("Labyrinthes entamés - parties commencés :")
+		print("Labyrinthes entamÃ©s - parties commencÃ©s :")
 		chemin = partiessaved
 	else:
 		print("Labyrinthes disponibles :")
@@ -43,7 +43,6 @@ def PartieExiste(nom,started):
 	if os.path.isfile(chemin+"\\"+nom+extension):
 		return True
 	else:
-		print("Partie introuvable, veuillez recommencer !")
 		return False
 
 def creer_labyrinthe_depuis_chaine(nom,started):
@@ -88,6 +87,8 @@ def update_labyrinthe_depuis_grille(nom,grille):
 	f.close()
 
 def create_partie(nom):
+	if os.path.exists(chemin_obstacle+nom+extension):
+		os.remove(chemin_obstacle+nom+extension)
 	copy2(partiesbkp+"\\"+nom+extension,chemin)
 
 def afficher_partie(nom):
